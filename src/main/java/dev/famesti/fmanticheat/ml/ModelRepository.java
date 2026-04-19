@@ -9,8 +9,9 @@ import dev.famesti.fmanticheat.ml.preprocess.VerifierStage;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -32,6 +33,7 @@ public final class ModelRepository {
     }
 
     public void loadOrCreateDefaults() {
+        ensureBundledModelsPresent();
         this.filterStage = (FilterStage) read(settings.getModels().getFilterFile(), FilterStage.class);
         if (filterStage == null) {
             filterStage = new FilterStage(settings.getModels().getFilterSmoothing());
@@ -74,6 +76,50 @@ public final class ModelRepository {
     public VerifierStage getVerifierStage() { return verifierStage; }
     public FamestiRnnModel getMainModel() { return mainModel; }
     public long getLastUpdated() { return lastUpdated; }
+
+    private void ensureBundledModelsPresent() {
+        exportBundledModel(settings.getModels().getFilterFile());
+        exportBundledModel(settings.getModels().getCleanerFile());
+        exportBundledModel(settings.getModels().getVerifierFile());
+        exportBundledModel(settings.getModels().getMainFile());
+    }
+
+    private void exportBundledModel(String fileName) {
+        File file = new File(directories.getModelsFolder(), fileName);
+        if (file.exists()) {
+            return;
+        }
+        InputStream input = plugin.getResource("models/" + fileName);
+        if (input == null) {
+            return;
+        }
+        FileOutputStream output = null;
+        try {
+            output = new FileOutputStream(file);
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = input.read(buffer)) != -1) {
+                output.write(buffer, 0, read);
+            }
+            output.flush();
+            if (!settings.getPlugin().isMinimalStartupOutput()) {
+                plugin.getLogger().info("Loaded bundled base model: " + fileName);
+            }
+        } catch (Exception ex) {
+            plugin.getLogger().warning("Failed to export bundled model " + fileName + ": " + ex.getMessage());
+        } finally {
+            try {
+                input.close();
+            } catch (Exception ignored) {
+            }
+            if (output != null) {
+                try {
+                    output.close();
+                } catch (Exception ignored) {
+                }
+            }
+        }
+    }
 
     private Object read(String fileName, Class<?> expected) {
         File file = new File(directories.getModelsFolder(), fileName);
