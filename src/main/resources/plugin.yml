@@ -1,0 +1,50 @@
+name: FM-AntiCheat
+main: dev.famesti.fmanticheat.FmAntiCheatPlugin
+version: 1.0.0
+api-version: 1.13
+author: Famesti
+website: https://example.invalid/fm-anticheat
+description: AI-powered anti-cheat with custom RNN Kill-Aim detection.
+load: POSTWORLD
+softdepend:
+  - PlaceholderAPI
+commands:
+  fm:
+    description: Main command for FM AntiCheat
+    usage: /fm <train|ml|record|prob|debug|alert|detect|reload>
+    permission: fmanticheat.command
+permissions:
+  fmanticheat.*:
+    description: Full access to FM AntiCheat
+    default: op
+    children:
+      fmanticheat.command: true
+      fmanticheat.train: true
+      fmanticheat.ml: true
+      fmanticheat.record: true
+      fmanticheat.prob: true
+      fmanticheat.debug: true
+      fmanticheat.alert: true
+      fmanticheat.reload: true
+      fmanticheat.notify: true
+      fmanticheat.bypass: true
+  fmanticheat.command:
+    default: op
+  fmanticheat.train:
+    default: op
+  fmanticheat.ml:
+    default: op
+  fmanticheat.record:
+    default: op
+  fmanticheat.prob:
+    default: op
+  fmanticheat.debug:
+    default: op
+  fmanticheat.alert:
+    default: op
+  fmanticheat.reload:
+    default: op
+  fmanticheat.notify:
+    default: op
+  fmanticheat.bypass:
+    default: false

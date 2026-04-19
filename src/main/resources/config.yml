@@ -1,0 +1,112 @@
+plugin:
+  prefix: '&#ff2d55&lFM &#ffd166&lAC &8» '
+  debug-default: false
+  alerts-default: true
+  action-bar-interval-ticks: 20
+  monitor-interval-ticks: 2
+  probability-broadcast-interval-ticks: 30
+  async-training-threads: 1
+  banner-enabled: true
+  minimal-startup-output: true
+
+datasets:
+  folder: datasets
+  target-size-bytes: 17408
+  min-frames-to-save: 24
+  auto-stop-when-full: true
+  compression-level: 1
+  max-concurrent-recordings: 16
+  combat-window-ticks: 12
+  actionbar:
+    enabled: true
+    template: '&6Samples: &f%samples% &8| &eProgress: &f%progress%% &8| &bRotations: &f%rotations% &8| &cLabel: &f%label%'
+
+models:
+  active-main: main
+  training-batch-size: 16
+  learning-rate: 0.0035
+  decay: 0.00005
+  sequence-length: 24
+  input-size: 32
+  hidden-size: 196
+  clip-gradient: 2.4
+  verifier-threshold: 0.61
+  cleaner-outlier-clamp: 3.75
+  filter-smoothing: 0.72
+  autosave-after-train: true
+  initial-threshold: 0.65
+  punish-commands:
+    - 'ban %player% Система подозревает вас в ЧИТАХ! Ложно? @flowe1x'
+  punish-after-flags: 3
+  verbose-probability-log-threshold: 0.65
+  model-files:
+    filter: filter.dat
+    cleaner: cleaner.dat
+    verifier: verifier.dat
+    main: main.dat
+
+features:
+  include-position: true
+  include-velocity: true
+  include-rotation: true
+  include-clicks: true
+  include-acceleration: true
+  include-target-consistency: true
+  include-distance: true
+  include-strafe: true
+  max-cps-window-ms: 1000
+  sample-yaw-cap: 180.0
+  sample-pitch-cap: 90.0
+  max-horizontal-speed: 1.25
+  max-vertical-speed: 1.25
+  max-distance: 8.0
+
+checks:
+  enabled: true
+  threshold: 0.65
+  minimum-combat-frames: 10
+  cooldown-between-alerts-ms: 1200
+  rotation-snap-threshold: 58.0
+  impossible-smoothness-threshold: 0.985
+  silent-aim-angle-threshold: 22.5
+  tracking-consistency-threshold: 0.87
+  aim-lock-duration-ticks: 8
+  cps-hard-limit: 25
+  setback-enabled: false
+  punish-enabled: true
+  punishment-mode: ban
+  minimum-prediction-interval-ms: 90
+  probability-smoothing-factor: 0.78
+  minimum-alert-streak: 1
+  watch-threshold-percent: 65
+  medium-threshold-percent: 70
+  terminal-threshold-percent: 94
+  watch-violation-gain: 20
+  medium-violation-gain: 60
+
+messages:
+  no-permission: '&#ff2d55&lFMAC &8| &cНедостаточно прав.'
+  reloaded: '&#00f5d4&lFMAC &8| &fКонфиг и модели &aуспешно перезагружены&f.'
+  debug-on: '&#fee440&lDEBUG &8| &fРежим отладки &aвключен&f.'
+  debug-off: '&#adb5bd&lDEBUG &8| &fРежим отладки &7выключен&f.'
+  alerts-on: '&#00f5d4&lALERTS &8| &fГлобальные алерты &aвключены&f.'
+  alerts-off: '&#ff2d55&lALERTS &8| &fГлобальные алерты &cвыключены&f.'
+  record-start: '&#80ed99&lDATASET &8| &fЗапись датасета началась. Метка: &e%label%&f.'
+  record-stop: '&#ffd166&lDATASET &8| &fЗапись датасета завершена: &e%file%'
+  record-full: '&#ff8a00&lDATASET &8| &fТекущий датасет достиг целевого размера.'
+  train-start: '&#00bbf9&lTRAIN &8| &fОбучение модели &e%model% &fзапущено на &e%epochs% &fэпох.'
+  train-finish: '&#00f5d4&lTRAIN &8| &fОбучение модели &a%model% &fзавершено.'
+  prob-line: '&#7f5af0&lFM HUD &8| &f%player% &8| &f%prob%%% &8| &#ffd166LIVE'
+  alert-format: '&#ff2d55&lFM DETECT &8| &f%player% &8| &#ff8a00%prob%%% &8| &#f15bb5%reason%'
+  ml-header: '&#7f5af0&l==== FM ML CORE ==== '
+  ml-entry: '&#f15bb5%name% &8| &floaded=&a%loaded% &8| &fupdated=&e%updated%'
+  sanction-reason: |-
+    Система подозревает вас в ЧИТАХ!
+                     Ложно? @flowe1x
+
+advanced:
+  save-probability-history: true
+  probability-history-size: 120
+  cache-target-uuid: true
+  max-player-cache: 512
+  profiler-enabled: false
